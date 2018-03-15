@@ -19,9 +19,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4ib@^xxd!kvztkp#t0j88v6^64z5id$l9q@b)$yhhknss(s(cu'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get('HOSTNAME'), ]
 
 # Application definition
 
@@ -113,5 +113,4 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
-MIRROR_URI = os.environ.get('MIRROR_URI')
-
+MIRROR_URI = os.environ.get('MIRROR_URI', 'http://web-2')
