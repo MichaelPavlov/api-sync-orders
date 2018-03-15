@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  web-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MIRROR_URI=http://web-2:9000
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+
+    ports:
+      - "8000:8000"
+
+  web-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - MIRROR_URI=http://web-1:8000
+    ports:
+      - "9000:8000"
