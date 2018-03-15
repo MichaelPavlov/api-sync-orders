@@ -6,7 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - MIRROR_URI=http://web-2:9000
+      - MIRROR_URI=http://web-2:8000
+      - HOSTNAME=web-1
+      - SECRET_KEY=qWxPJrZCLeHZraNTWjEKHdJJxJyho823423
     command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
 
     ports:
@@ -19,5 +21,7 @@ services:
     command: bash -c "python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
     environment:
       - MIRROR_URI=http://web-1:8000
+      - HOSTNAME=web-2
+      - SECRET_KEY=qWxPJrZCLeHZraNTWjEKHdJJxJyho8lkj32n4l
     ports:
       - "9000:8000"
