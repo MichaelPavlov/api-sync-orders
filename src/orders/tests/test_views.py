@@ -1,3 +1,5 @@
+import uuid
+
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
@@ -9,7 +11,8 @@ class OrderViewSetTest(APITestCase):
         url = reverse("orders:order-list")
         data = {
             'quantity': 5,
-            'total_price': 5555
+            'total_price': 5555,
+            "uuid": uuid.uuid4()
         }
         response = self.client.post(url, data=data)
         self.assertEqual(Order.objects.count(), 1)
@@ -17,10 +20,10 @@ class OrderViewSetTest(APITestCase):
         self.assertEqual(Order.objects.first().total_price, 5555)
 
     def test_order_can_be_updated(self):
-        order = Order.objects.create(quantity=5, total_price=5555)
-        url = reverse("orders:order-detail", kwargs={'pk': order.id})
+        order = Order.objects.create(quantity=5, total_price=5555, uuid=uuid.uuid4())
+        url = reverse("orders:order-detail", kwargs={'uuid': order.uuid})
         data = {
-            'id': order.id,
+            'uuid': order.uuid,
             'quantity': 7,
             'total_price': 7777
         }
@@ -30,7 +33,7 @@ class OrderViewSetTest(APITestCase):
         self.assertEqual(order.total_price, data["total_price"])
 
     def test_order_can_be_deleted(self):
-        order = Order.objects.create(quantity=5, total_price=5555)
-        url = reverse("orders:order-detail", kwargs={'pk': order.id})
+        order = Order.objects.create(quantity=5, total_price=5555, uuid=uuid.uuid4())
+        url = reverse("orders:order-detail", kwargs={'uuid': order.uuid})
         response = self.client.delete(url)
         self.assertEqual(Order.objects.count(), 0)
