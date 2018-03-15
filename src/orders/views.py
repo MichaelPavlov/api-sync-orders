@@ -7,3 +7,4 @@ from orders.serializers import OrderSerializer
 class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
+    lookup_field = 'uuid'
